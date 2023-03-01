@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "defaultValue": true,
+      "name": "paddle.enabled",
+      "description": "Enables Paddle integration.",
+      "type": "java.lang.Boolean"
+    }
+  ]
+}
