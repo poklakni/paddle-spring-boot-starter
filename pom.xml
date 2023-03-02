@@ -9,7 +9,7 @@
     </parent>
     <groupId>io.github.poklakni.paddle</groupId>
     <artifactId>paddle-spring-boot-starter</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>paddle-spring-boot-starter</name>
     <description>Paddle Spring Boot Starter</description>
     <url>https://github.com/poklakni/paddle-spring-boot-starter</url>
@@ -31,7 +31,7 @@
         <connection>scm:git:ssh://git@github.com/poklakni/paddle-spring-boot-starter.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/poklakni/paddle-spring-boot-starter.git</developerConnection>
         <url>https://github.com/poklakni/paddle-spring-boot-starter</url>
-        <tag>v@{project.version}</tag>
+        <tag>v1.0.0</tag>
     </scm>
 
     <properties>
