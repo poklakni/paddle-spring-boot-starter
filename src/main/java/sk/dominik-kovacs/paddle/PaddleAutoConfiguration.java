@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Bean;
  * @author Dominik Kovács
  */
 @AutoConfiguration
-@EnableConfigurationProperties(PaddleProperties.class)
+@EnableConfigurationProperties(sk.poklakni.paddle.PaddleProperties.class)
 @ConditionalOnProperty(
-    prefix = PaddleProperties.PREFIX,
+    prefix = sk.poklakni.paddle.PaddleProperties.PREFIX,
     name = "enabled",
     havingValue = "true",
     matchIfMissing = true)
@@ -22,13 +22,13 @@ public class PaddleAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public PaddleAuthorizationManager paddleAuthorizationManager(PaddleProperties paddleProperties) {
-    return new PaddleAuthorizationManager(paddleProperties.whitelist());
+  public sk.poklakni.paddle.PaddleAuthorizationManager paddleAuthorizationManager(sk.poklakni.paddle.PaddleProperties paddleProperties) {
+    return new sk.poklakni.paddle.PaddleAuthorizationManager(paddleProperties.whitelist());
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public PaddleSignatureVerifier paddleSignatureVerifier(PaddleProperties paddleProperties) {
-    return new PaddleSignatureVerifier(paddleProperties.publicKey());
+  public sk.poklakni.paddle.PaddleSignatureVerifier paddleSignatureVerifier(sk.poklakni.paddle.PaddleProperties paddleProperties) {
+    return new sk.poklakni.paddle.PaddleSignatureVerifier(paddleProperties.publicKey());
   }
 }
