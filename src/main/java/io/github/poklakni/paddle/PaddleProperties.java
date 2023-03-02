@@ -17,5 +17,6 @@ import java.util.Set;
 @ConfigurationProperties(prefix = PaddleProperties.PREFIX)
 public record PaddleProperties(Set<String> whitelist, String publicKey) {
 
+  /** Paddle configuration properties prefix */
   public static final String PREFIX = "paddle";
 }

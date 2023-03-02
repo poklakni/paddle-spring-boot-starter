@@ -20,11 +20,22 @@ public class PaddleAuthorizationManager
 
   private final Set<String> whitelist;
 
+  /**
+   * Constructs {@link PaddleAuthorizationManager} with IP whitelist
+   *
+   * @param whitelist IP whitelist
+   */
   public PaddleAuthorizationManager(Set<String> whitelist) {
     Assert.notNull(whitelist, "Whitelist must not be set to null.");
     this.whitelist = whitelist;
   }
 
+  /**
+   * executes the IP verification check
+   *
+   * @param authentication authentication
+   * @param context request context
+   */
   @Override
   public AuthorizationDecision check(
       Supplier<Authentication> authentication, RequestAuthorizationContext context) {

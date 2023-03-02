@@ -27,6 +27,11 @@ public class PaddleSignatureVerifier {
 
   private final String publicKey;
 
+  /**
+   * Constructs {@link PaddleSignatureVerifier} with provided public key
+   *
+   * @param publicKey Paddle public key
+   */
   public PaddleSignatureVerifier(String publicKey) {
     Assert.hasText(publicKey, "Public key must be provided.");
     this.publicKey = publicKey;

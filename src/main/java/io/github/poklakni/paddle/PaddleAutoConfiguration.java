@@ -20,12 +20,22 @@ import org.springframework.context.annotation.Bean;
     matchIfMissing = true)
 public class PaddleAutoConfiguration {
 
+  /**
+   * Auto-configured {@link PaddleAuthorizationManager}
+   * @param paddleProperties Paddle properties
+   * @return auto-configured {@link PaddleAuthorizationManager}
+   */
   @Bean
   @ConditionalOnMissingBean
   public PaddleAuthorizationManager paddleAuthorizationManager(PaddleProperties paddleProperties) {
     return new PaddleAuthorizationManager(paddleProperties.whitelist());
   }
 
+  /**
+   * Auto-configured {@link PaddleSignatureVerifier}
+   * @param paddleProperties Paddle properties
+   * @return auto-configured {@link PaddleSignatureVerifier}
+   */
   @Bean
   @ConditionalOnMissingBean
   public PaddleSignatureVerifier paddleSignatureVerifier(PaddleProperties paddleProperties) {
