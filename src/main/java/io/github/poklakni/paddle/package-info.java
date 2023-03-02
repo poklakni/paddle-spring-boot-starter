@@ -20,3 +20,6 @@
  */
 
 /** <a href="https://www.paddle.com/">Paddle</a> Spring Boot starter. */
+@org.springframework.lang.NonNullApi
+@org.springframework.lang.NonNullFields
+package io.github.poklakni.paddle;

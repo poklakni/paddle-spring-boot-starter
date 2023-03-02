@@ -1,4 +1,4 @@
-package sk.poklakni.paddle;
+package io.github.poklakni.paddle;
 
 import org.springframework.util.Assert;
 

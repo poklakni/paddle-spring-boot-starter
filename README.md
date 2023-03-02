@@ -8,7 +8,7 @@
 Include this dependency in your project
 ```xml
 <dependency>
-    <groupId>sk.dominik-kovacs.paddle</groupId>
+    <groupId>io.github.poklakni.paddle</groupId>
     <artifactId>paddle-spring-boot-starter</artifactId>
     <scope>1.0.0</scope>
 </dependency>

@@ -1,4 +1,4 @@
-package sk.poklakni.paddle;
+package io.github.poklakni.paddle;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Bean;
  * @author Dominik Kovács
  */
 @AutoConfiguration
-@EnableConfigurationProperties(sk.poklakni.paddle.PaddleProperties.class)
+@EnableConfigurationProperties(PaddleProperties.class)
 @ConditionalOnProperty(
-    prefix = sk.poklakni.paddle.PaddleProperties.PREFIX,
+    prefix = PaddleProperties.PREFIX,
     name = "enabled",
     havingValue = "true",
     matchIfMissing = true)
@@ -22,13 +22,13 @@ public class PaddleAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public sk.poklakni.paddle.PaddleAuthorizationManager paddleAuthorizationManager(sk.poklakni.paddle.PaddleProperties paddleProperties) {
-    return new sk.poklakni.paddle.PaddleAuthorizationManager(paddleProperties.whitelist());
+  public PaddleAuthorizationManager paddleAuthorizationManager(PaddleProperties paddleProperties) {
+    return new PaddleAuthorizationManager(paddleProperties.whitelist());
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public sk.poklakni.paddle.PaddleSignatureVerifier paddleSignatureVerifier(sk.poklakni.paddle.PaddleProperties paddleProperties) {
-    return new sk.poklakni.paddle.PaddleSignatureVerifier(paddleProperties.publicKey());
+  public PaddleSignatureVerifier paddleSignatureVerifier(PaddleProperties paddleProperties) {
+    return new PaddleSignatureVerifier(paddleProperties.publicKey());
   }
 }

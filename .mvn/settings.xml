@@ -1,5 +1,7 @@
 <settings>
 
+    <localRepository>/maven-repo</localRepository>
+
     <servers>
         <server>
             <id>ossrh</id>
