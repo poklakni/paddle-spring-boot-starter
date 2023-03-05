@@ -53,10 +53,10 @@ public class PaddleSignatureVerifier {
    * @author Dominik Kovács
    */
   public boolean verify(Map<String, String> event) {
-    var signatureValue = event.remove(SIGNATURE_PARAMETER);
-    if (signatureValue == null) {
+    if (!event.containsKey(SIGNATURE_PARAMETER)) {
       return false;
     }
+    var signatureValue = event.remove(SIGNATURE_PARAMETER);
 
     try {
       byte[] serializedEvent = PHPSerializer.toSerializedString(event).getBytes();

@@ -29,13 +29,13 @@ class PaddleAuthorizationManagerTests {
       Set<String> whitelist, boolean expectedDecision) {
 
     // Given
-    PaddleAuthorizationManager authorizationManager = new PaddleAuthorizationManager(whitelist);
-    MockHttpServletRequest request = new MockHttpServletRequest();
+    var authorizationManager = new PaddleAuthorizationManager(whitelist);
+    var request = new MockHttpServletRequest();
     request.setRemoteAddr("192.168.0.1");
-    RequestAuthorizationContext context = new RequestAuthorizationContext(request);
+    var context = new RequestAuthorizationContext(request);
 
     // When
-    AuthorizationDecision decision = authorizationManager.check(() -> null, context);
+    var decision = authorizationManager.check(() -> null, context);
 
     // Then
     assertThat(decision)
