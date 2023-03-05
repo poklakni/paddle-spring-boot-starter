@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 /**
  * Autoconfiguration for {@link PaddleAuthorizationManager} and {@link PaddleSignatureVerifier}.
  *
@@ -22,6 +25,7 @@ public class PaddleAutoConfiguration {
 
   /**
    * Auto-configured {@link PaddleAuthorizationManager}
+   *
    * @param paddleProperties Paddle properties
    * @return auto-configured {@link PaddleAuthorizationManager}
    */
@@ -33,12 +37,16 @@ public class PaddleAutoConfiguration {
 
   /**
    * Auto-configured {@link PaddleSignatureVerifier}
+   *
    * @param paddleProperties Paddle properties
    * @return auto-configured {@link PaddleSignatureVerifier}
+   * @throws NoSuchAlgorithmException when the SHA1withRSA algorithm is no longer supported
+   * @throws InvalidKeySpecException when the provided public key is invalid
    */
   @Bean
   @ConditionalOnMissingBean
-  public PaddleSignatureVerifier paddleSignatureVerifier(PaddleProperties paddleProperties) {
+  public PaddleSignatureVerifier paddleSignatureVerifier(PaddleProperties paddleProperties)
+      throws NoSuchAlgorithmException, InvalidKeySpecException {
     return new PaddleSignatureVerifier(paddleProperties.publicKey());
   }
 }

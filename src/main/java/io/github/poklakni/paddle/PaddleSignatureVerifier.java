@@ -2,8 +2,6 @@ package io.github.poklakni.paddle;
 
 import org.springframework.util.Assert;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -12,7 +10,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Paddle signature verifier
@@ -24,17 +21,25 @@ public class PaddleSignatureVerifier {
   private static final String SIGNATURE_ALGORITHM = "SHA1withRSA";
   private static final String PUBLIC_KEY_ALGORITHM = "RSA";
   private static final String SIGNATURE_PARAMETER = "p_signature";
+  private static final String BEGIN_PUBLIC_KEY_DELIMITER = "-----BEGIN PUBLIC KEY-----";
+  private static final String END_PUBLIC_KEY_DELIMITER = "-----END PUBLIC KEY-----";
 
-  private final String publicKey;
+  private final Signature signature;
+
+  private final PublicKey publicKey;
 
   /**
    * Constructs {@link PaddleSignatureVerifier} with provided public key
    *
    * @param publicKey Paddle public key
+   * @throws NoSuchAlgorithmException when the SHA1withRSA algorithm is no longer supported
+   * @throws InvalidKeySpecException when the provided public key is invalid
    */
-  public PaddleSignatureVerifier(String publicKey) {
+  public PaddleSignatureVerifier(String publicKey)
+      throws NoSuchAlgorithmException, InvalidKeySpecException {
     Assert.hasText(publicKey, "Public key must be provided.");
-    this.publicKey = publicKey;
+    this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+    this.publicKey = getPublicKey(publicKey);
   }
 
   /**
@@ -48,48 +53,30 @@ public class PaddleSignatureVerifier {
    * @author Dominik Kovács
    */
   public boolean verify(Map<String, String> event) {
-    var signature = event.remove(SIGNATURE_PARAMETER);
-    if (signature == null) {
+    var signatureValue = event.remove(SIGNATURE_PARAMETER);
+    if (signatureValue == null) {
       return false;
     }
 
     try {
-      var signer = Signature.getInstance(SIGNATURE_ALGORITHM);
-      signer.initVerify(getPublicKey());
-      signer.update(buildSignerString(event).getBytes());
+      byte[] serializedEvent = PHPSerializer.toSerializedString(event).getBytes();
+      byte[] decodedSignatureValue = Base64.getDecoder().decode(signatureValue);
 
-      return signer.verify(Base64.getDecoder().decode(signature));
+      this.signature.initVerify(publicKey);
+      this.signature.update(serializedEvent);
+      return this.signature.verify(decodedSignatureValue);
     } catch (Exception e) {
       return false;
     }
   }
 
-  private PublicKey getPublicKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
+  private PublicKey getPublicKey(String publicKey)
+      throws NoSuchAlgorithmException, InvalidKeySpecException {
     var key =
-        publicKey
-            .replace("-----BEGIN PUBLIC KEY-----\n", "")
-            .replace("-----END PUBLIC KEY-----", "");
+        publicKey.replace(BEGIN_PUBLIC_KEY_DELIMITER, "").replace(END_PUBLIC_KEY_DELIMITER, "");
 
     var decodedKey = Base64.getMimeDecoder().decode(key);
     var keySpec = new X509EncodedKeySpec(decodedKey);
     return KeyFactory.getInstance(PUBLIC_KEY_ALGORITHM).generatePublic(keySpec);
-  }
-
-  private String buildSignerString(Map<String, String> map) {
-    var builder = new StringBuilder().append("a:").append(map.size()).append(":{");
-
-    for (var entry : new TreeMap<>(map).entrySet()) {
-      var valueDecoded = URLDecoder.decode(entry.getValue(), StandardCharsets.UTF_8);
-      builder.append(
-          String.format(
-              "s:%d:\"%s\";s:%d:\"%s\";",
-              entry.getKey().getBytes(StandardCharsets.UTF_8).length,
-              entry.getKey(),
-              valueDecoded.getBytes(StandardCharsets.UTF_8).length,
-              valueDecoded));
-    }
-
-    builder.append("}");
-    return builder.toString();
   }
 }
