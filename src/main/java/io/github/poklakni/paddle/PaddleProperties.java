@@ -1,6 +1,7 @@
 package io.github.poklakni.paddle;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.lang.Nullable;
 
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
  * @author Dominik Kovács
  */
 @ConfigurationProperties(prefix = PaddleProperties.PREFIX)
-public record PaddleProperties(Set<String> whitelist, String publicKey) {
+public record PaddleProperties(@Nullable Set<String> whitelist, String publicKey) {
 
   /** Paddle configuration properties prefix */
   public static final String PREFIX = "paddle";
