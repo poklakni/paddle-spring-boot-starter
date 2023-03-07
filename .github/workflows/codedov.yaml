@@ -1,0 +1,28 @@
+name: Code Coverage
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  codecov:
+    name: Run Codecov
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+
+      - name: Make Maven wrapper executable
+        run: chmod +x ./mvnw
+
+      - name: Build with Maven
+        run:  ./mvnw clean package
+
+      - name: Run Codecov
+        uses: codecov/codecov-action@v3

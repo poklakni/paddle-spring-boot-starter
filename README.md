@@ -36,16 +36,16 @@ Example usage
 @Configuration
 public class WebSecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, PaddleAuthorizationManager paddleAuthorizationManager) {
-        http.authorizeHttpRequests()
-            .requestMatchers("/foo/bar/**")
-            .access(paddleAuthorizationManager)
-            .anyRequest()
-        .authenticated();
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http, PaddleAuthorizationManager paddleAuthorizationManager) {
+    http.authorizeHttpRequests()
+      .requestMatchers("/foo/bar/**")
+      .access(paddleAuthorizationManager)
+      .anyRequest()
+      .authenticated();
     
-        return http.build();
-    }
+    return http.build();
+  }
 }
 ```
 
