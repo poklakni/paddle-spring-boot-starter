@@ -6,6 +6,5 @@ updates:
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
-    autorebase: true
     labels:
       - "dependencies"
