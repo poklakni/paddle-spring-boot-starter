@@ -23,7 +23,7 @@ jobs:
         run: chmod +x ./mvnw
 
       - name: Build with Maven
-        run:  ./mvnw clean package
+        run:  ./mvnw clean test
 
-      - name: Run Codecov
+      - name: Post Codecov results
         uses: codecov/codecov-action@v3

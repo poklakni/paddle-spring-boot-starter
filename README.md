@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Known Vulnerabilities](https://snyk.io/test/github/poklakni/paddle-spring-boot-starter/badge.svg)](https://snyk.io/test/github/poklakni/paddle-spring-boot-starter/badge.svg)
-
+[![codecov](https://codecov.io/gh/poklakni/paddle-spring-boot-starter/branch/main/graph/badge.svg?token=FB7XNCOFD9)](https://codecov.io/gh/poklakni/paddle-spring-boot-starter)
 ---
 
 ## Installation
