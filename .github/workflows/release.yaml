@@ -28,11 +28,11 @@ jobs:
       - name: Prepare Maven release
         run:  ./mvnw -ntp -B release:prepare
         env:
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Perform Maven release
         uses: ./mvnw -ntp -B -DskipTests release:perform
         env:
           OSSRH_USERNAME: poklakni
           OSSRH_TOKEN: ${{ secrets.OSSRH_PASSWORD }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
