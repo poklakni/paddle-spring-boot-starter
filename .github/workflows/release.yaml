@@ -36,5 +36,5 @@ jobs:
         run: ./mvnw -ntp -B clean release:clean release:prepare release:perform
         env:
           OSSRH_USERNAME: poklakni
-          OSSRH_TOKEN: ${{ secrets.OSSRH_PASSWORD }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
