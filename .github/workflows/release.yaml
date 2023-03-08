@@ -37,8 +37,9 @@ jobs:
 
       - name: Prepare Maven release
         run: ./mvnw -ntp -B release:prepare
-        env:
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Perform Maven release
         uses: ./mvnw -ntp -B -DskipTests release:perform
