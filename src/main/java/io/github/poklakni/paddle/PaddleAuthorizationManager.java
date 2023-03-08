@@ -1,5 +1,7 @@
 package io.github.poklakni.paddle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
@@ -17,6 +19,8 @@ import java.util.function.Supplier;
  */
 public class PaddleAuthorizationManager
     implements AuthorizationManager<RequestAuthorizationContext> {
+
+  private static final Logger log = LoggerFactory.getLogger(PaddleAuthorizationManager.class);
 
   @Nullable private final Set<String> whitelist;
 
@@ -38,7 +42,6 @@ public class PaddleAuthorizationManager
   @Override
   public AuthorizationDecision check(
       Supplier<Authentication> authentication, RequestAuthorizationContext context) {
-
     var granted =
         whitelist == null
             || whitelist.isEmpty()
@@ -46,6 +49,9 @@ public class PaddleAuthorizationManager
                 .map(IpAddressMatcher::new)
                 .anyMatch(ipAddressMatcher -> ipAddressMatcher.matches(context.getRequest()));
 
+    if (!granted) {
+      log.warn("Blocked request from not trusted IP {}.", context.getRequest().getRemoteAddr());
+    }
     return new AuthorizationDecision(granted);
   }
 }

@@ -1,0 +1,38 @@
+name: Release
+
+on: workflow_dispatch
+
+jobs:
+  release:
+    name: Release new version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: corretto
+          cache: maven
+          server-id: ossrh
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+
+      - name: Make Maven wrapper executable
+        run: chmod +x ./mvnw
+
+      - name: Prepare Maven release
+        run:  ./mvnw -ntp -B clean release:prepare
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Perform Maven release
+        uses: ./mvnw -ntp -B -DskipTests release:perform
+        env:
+          OSSRH_USERNAME: poklakni
+          OSSRH_TOKEN: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}

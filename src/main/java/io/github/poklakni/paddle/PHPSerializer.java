@@ -1,5 +1,8 @@
 package io.github.poklakni.paddle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -7,12 +10,14 @@ import java.util.TreeMap;
 
 class PHPSerializer {
 
+  private static final Logger log = LoggerFactory.getLogger(PHPSerializer.class);
+
   private PHPSerializer() {}
 
-  static String toSerializedString(Map<String, String> map) {
-    var builder = new StringBuilder().append("a:").append(map.size()).append(":{");
+  static String toSerializedString(Map<String, String> event) {
+    var builder = new StringBuilder().append("a:").append(event.size()).append(":{");
 
-    for (var entry : new TreeMap<>(map).entrySet()) {
+    for (var entry : new TreeMap<>(event).entrySet()) {
       var valueDecoded = URLDecoder.decode(entry.getValue(), StandardCharsets.UTF_8);
       builder.append(
           String.format(
@@ -24,6 +29,7 @@ class PHPSerializer {
     }
 
     builder.append("}");
+    log.debug("Event map converted to PHP serialized string: {}", builder);
     return builder.toString();
   }
 }

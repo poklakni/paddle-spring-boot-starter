@@ -1,5 +1,7 @@
 package io.github.poklakni.paddle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -23,6 +25,8 @@ import java.security.spec.InvalidKeySpecException;
     matchIfMissing = true)
 public class PaddleAutoConfiguration {
 
+  private static final Logger log = LoggerFactory.getLogger(PaddleAutoConfiguration.class);
+
   /**
    * Auto-configured {@link PaddleAuthorizationManager}
    *
@@ -32,6 +36,7 @@ public class PaddleAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public PaddleAuthorizationManager paddleAuthorizationManager(PaddleProperties paddleProperties) {
+    log.debug("Configuring PaddleAuthorizationManager.");
     return new PaddleAuthorizationManager(paddleProperties.whitelist());
   }
 
@@ -47,6 +52,7 @@ public class PaddleAutoConfiguration {
   @ConditionalOnMissingBean
   public PaddleSignatureVerifier paddleSignatureVerifier(PaddleProperties paddleProperties)
       throws NoSuchAlgorithmException, InvalidKeySpecException {
+    log.debug("Configuring PaddleSignatureVerifier.");
     return new PaddleSignatureVerifier(paddleProperties.publicKey());
   }
 }

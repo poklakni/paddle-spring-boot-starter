@@ -1,5 +1,7 @@
 package io.github.poklakni.paddle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import java.security.KeyFactory;
@@ -17,6 +19,8 @@ import java.util.Map;
  * @author Dominik Kovács
  */
 public class PaddleSignatureVerifier {
+
+  private static final Logger log = LoggerFactory.getLogger(PaddleSignatureVerifier.class);
 
   private static final String SIGNATURE_ALGORITHM = "SHA1withRSA";
   private static final String PUBLIC_KEY_ALGORITHM = "RSA";
@@ -54,6 +58,7 @@ public class PaddleSignatureVerifier {
    */
   public boolean verify(Map<String, String> event) {
     if (!event.containsKey(SIGNATURE_PARAMETER)) {
+      log.warn("Missing signature in event body.");
       return false;
     }
     var signatureValue = event.remove(SIGNATURE_PARAMETER);
@@ -64,8 +69,13 @@ public class PaddleSignatureVerifier {
 
       this.signature.initVerify(publicKey);
       this.signature.update(serializedEvent);
-      return this.signature.verify(decodedSignatureValue);
+      boolean verified = this.signature.verify(decodedSignatureValue);
+      if (!verified) {
+        log.warn("Signature could not be verified.");
+      }
+      return verified;
     } catch (Exception e) {
+      log.warn("Error verifying signature.", e);
       return false;
     }
   }

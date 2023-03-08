@@ -17,13 +17,14 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 17
-          distribution: temurin
+          distribution: corretto
+          cache: maven
 
       - name: Make Maven wrapper executable
         run: chmod +x ./mvnw
 
       - name: Build with Maven
-        run:  ./mvnw clean test
+        run:  ./mvnw -ntp -B clean test
 
       - name: Post Codecov results
         uses: codecov/codecov-action@v3
