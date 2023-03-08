@@ -26,7 +26,7 @@ jobs:
         run: chmod +x ./mvnw
 
       - name: Prepare Maven release
-        run:  ./mvnw -ntp -B clean release:prepare
+        run:  ./mvnw -ntp -B release:prepare
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
