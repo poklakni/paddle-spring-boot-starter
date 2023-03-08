@@ -11,7 +11,7 @@ Include this dependency in your project
 <dependency>
     <groupId>io.github.poklakni.paddle</groupId>
     <artifactId>paddle-spring-boot-starter</artifactId>
-    <scope>1.0.2</scope>
+    <scope>1.0.3</scope>
 </dependency>
 ```
 ---
