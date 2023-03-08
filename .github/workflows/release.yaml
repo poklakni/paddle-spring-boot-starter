@@ -32,17 +32,8 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Make Maven wrapper executable
-        run: chmod +x ./mvnw
-
-      - name: Prepare Maven release
-        run: ./mvnw -ntp -B release:prepare
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Perform Maven release
-        uses: ./mvnw -ntp -B -DskipTests release:perform
+      - name: Perform maven release
+        run: ./mvnw -ntp -B clean release:clean release:prepare release:perform
         env:
           OSSRH_USERNAME: poklakni
           OSSRH_TOKEN: ${{ secrets.OSSRH_PASSWORD }}
