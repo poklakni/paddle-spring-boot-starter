@@ -10,7 +10,7 @@ on:
 
 jobs:
   release:
-    if: github.actor == poklakni
+    if: github.actor == 'poklakni'
     name: Release new version
     runs-on: ubuntu-latest
     steps:
